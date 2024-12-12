@@ -12,6 +12,26 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class JWTConverter implements Converter<Jwt, AbstractAuthenticationToken> {
+    @Override
+    public AbstractAuthenticationToken convert(Jwt jwt) {
 
+        Map<String, Map<String, Object>> resourceAccess = jwt.getClaim("resource_access");
+        Collection<String> roles = null;
+
+        if (resourceAccess != null && resourceAccess.containsKey("Code-Cursos-Client")) {
+            Map<String, Object> clientRoles = resourceAccess.get("Code-Cursos-Client");
+            roles = (Collection<String>) clientRoles.get("roles");
+        }
+
+        if (roles == null) {
+            roles = List.of();
+        }
+
+        List<SimpleGrantedAuthority> authorities = roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toList());
+
+        return new JwtAuthenticationToken(jwt, authorities);
+    }
 
 }
