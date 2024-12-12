@@ -22,18 +22,6 @@ public class ProductController {
         this.courseService = courseService;
     }
 
-    @GetMapping("/")
-    @PreAuthorize("hasRole('USER')")
-    public String list() {
-        return "Listando produtos";
-    }
-
-    @PostMapping("/")
-    @PreAuthorize("hasRole('TEACHER')")
-    public String create() {
-        return "Cadastrando produtos";
-    }
-
     @GetMapping("/listCourse")
     public ResponseEntity<List<CourseDTO>> listCourse(){
         return ResponseEntity.status(HttpStatus.OK).body(courseService.listCourse());
