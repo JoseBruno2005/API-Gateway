@@ -12,4 +12,9 @@ import java.util.List;
 @FeignClient(name = "courseFunc", url = "${feign.course.func-course.url}")
 public interface CourseClient {
 
+    @GetMapping("/course/listCourse")
+    List<CourseDTO> listCourse();
+
+    @GetMapping("/course/listCourseTeacher/{id}")
+    List<CourseDTO> listCourseTeacher(@PathVariable("id") Long id);
 }
